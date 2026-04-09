@@ -1,0 +1,789 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civil Engineering | Wonders of the World</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #f5e6d8;
+            color: #5e4b3c;
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(237, 205, 180, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(227, 200, 180, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 40% 80%, rgba(210, 185, 160, 0.1) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255, 248, 240, 0.7);
+            backdrop-filter: blur(3px);
+            border-radius: 32px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 40px rgba(94, 75, 60, 0.1);
+            border: 1px solid rgba(237, 205, 180, 0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed #dbbc9e;
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #7a5a4a;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-family: 'Georgia', serif;
+        }
+        .header h1 span {
+            font-style: italic;
+            font-size: 1.8rem;
+            display: block;
+            color: #b28b6f;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+        .header p {
+            font-size: 1rem;
+            color: #9f7e66;
+            font-style: italic;
+            max-width: 600px;
+            margin: 1rem auto 0;
+            line-height: 1.6;
+        }
+        .menu {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+        .menu a {
+            color: #8b6b55;
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .menu a:hover {
+            border-bottom-color: #dbbc9e;
+            color: #7a5a4a;
+            transform: translateY(-2px);
+        }
+        .menu a.active {
+            border-bottom-color: #b28b6f;
+            color: #7a5a4a;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: #7a5a4a;
+            margin: 1.5rem 0 1rem;
+            letter-spacing: 1px;
+            border-left: 3px solid #dbbc9e;
+            padding-left: 1rem;
+        }
+        .section-subtitle {
+            color: #9f7e66;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        .collapsible-container {
+            margin: 2rem 0;
+        }
+        .collapsible-box {
+            background: rgba(255, 240, 230, 0.6);
+            backdrop-filter: blur(2px);
+            border: 1px solid #eed7c5;
+            border-radius: 24px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 20px rgba(94, 75, 60, 0.05);
+        }
+        .collapsible-box:hover {
+            background: #fff5ea;
+            border-color: #dbbc9e;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(156, 115, 90, 0.12);
+        }
+        .box-header {
+            padding: 1.2rem 1.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s ease;
+        }
+        .box-header:hover {
+            background: rgba(219, 188, 158, 0.1);
+        }
+        .box-header h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #7a5a4a;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.5px;
+        }
+        .wonder-icon {
+            font-size: 1.6rem;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.05));
+        }
+        .box-icon {
+            font-size: 1.2rem;
+            color: #b28b6f;
+            transition: transform 0.3s ease;
+        }
+        .box-icon.expanded {
+            transform: rotate(90deg);
+        }
+        .box-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .box-content.expanded {
+            max-height: 800px;
+        }
+        .inner-content {
+            padding: 0 1.8rem 1.5rem 1.8rem;
+            border-top: 1px dashed #eed7c5;
+        }
+        .inner-content p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #8b6b55;
+            margin: 1rem 0;
+        }
+        .inner-content ul {
+            margin: 0.8rem 0;
+            list-style: none;
+        }
+        .inner-content li {
+            padding: 0.5rem 0 0.5rem 1.8rem;
+            margin: 0.25rem 0;
+            color: #9f7e66;
+            line-height: 1.6;
+            position: relative;
+            font-size: 0.9rem;
+        }
+        .inner-content li:before {
+            content: "🌿";
+            position: absolute;
+            left: 0;
+            color: #b28b6f;
+            font-size: 0.8rem;
+        }
+        .inner-content b, .inner-content strong {
+            color: #7a5a4a;
+            font-weight: 500;
+        }
+        .info-card {
+            background: rgba(255, 240, 230, 0.6);
+            backdrop-filter: blur(2px);
+            border: 1px solid #eed7c5;
+            border-radius: 24px;
+            padding: 1.8rem;
+            margin: 2rem 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .info-card:hover {
+            background: #fff5ea;
+            border-color: #dbbc9e;
+            transform: translateY(-4px);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 300;
+            color: #b28b6f;
+            line-height: 1.2;
+            font-family: 'Georgia', serif;
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: #9f7e66;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+        .stat-group {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin: 2rem 0 1rem;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(219, 188, 158, 0.2);
+            color: #8b6b55;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            border: 1px solid rgba(219, 188, 158, 0.4);
+            transition: all 0.3s ease;
+        }
+        .badge:hover {
+            background: rgba(219, 188, 158, 0.35);
+            transform: translateY(-2px);
+        }
+        .floral-divider {
+            text-align: center;
+            margin: 2rem 0;
+            color: #dbbc9e;
+            font-size: 1rem;
+            letter-spacing: 8px;
+        }
+        .footer {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            text-align: center;
+            border-top: 1px dashed #dbbc9e;
+            font-size: 0.85rem;
+            color: #b28b6f;
+            font-style: italic;
+        }
+        .footer p {
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .content-wrapper > * {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        .content-wrapper > *:nth-child(1) { animation-delay: 0.05s; }
+        .content-wrapper > *:nth-child(2) { animation-delay: 0.1s; }
+        .content-wrapper > *:nth-child(3) { animation-delay: 0.15s; }
+        @media (max-width: 650px) {
+            body {
+                padding: 1rem;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .header h1 span {
+                font-size: 1.3rem;
+            }
+            .menu {
+                gap: 1rem;
+            }
+            .menu a {
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+            }
+            .stat-group {
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <div class="header">
+            <h1>
+                Civil Engineering &<br>The Wonders
+                <span>TO THE WORLD'S TREASURES</span>
+            </h1>
+            <p>"Advocating for preservation, innovation, and the legacy of human ingenuity."</p>
+        </div>
+        <div class="menu" id="navMenu">
+            <a class="nav-link active" data-page="wonders">🏛️ wonders</a>
+            <a class="nav-link" data-page="feats">⚙️ feats</a>
+            <a class="nav-link" data-page="preservation">🛡️ preservation</a>
+            <a class="nav-link" data-page="legacy">🌍 legacy</a>
+            <a class="nav-link" data-page="author">👤 about author</a>
+        </div>
+        <div id="dynamicContent">
+            <!-- Content will be injected here -->
+        </div>
+        <div class="badge-container">
+            <span class="badge">heritage</span>
+            <span class="badge">innovation</span>
+            <span class="badge">infrastructure</span>
+            <span class="badge">resilience</span>
+        </div>
+        <div class="footer">
+            <p>"We do not inherit the earth from our ancestors; we borrow it from our children." — Engineering with foresight.</p>
+            <div style="margin-top: 0.8rem;">🖤 🏛️ 💛</div>
+        </div>
+    </div>
+    <script>
+        const wondersContent = `
+            <div class="content-wrapper">
+                <div class="section-title">the 7 modern wonders</div>
+                <div class="section-subtitle">Timeless marvels that inspire civil engineering today</div>
+                <div class="collapsible-container">
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🧱</span> Great Wall of China</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p><b>Civil Engineering Brilliance:</b> Over 21,000 km of walls, trenches, and natural barriers — built across dynasties using rammed earth, stone, and brick.</p>
+                                <ul>
+                                    <li><b>Innovation:</b> Signal towers, advanced drainage, strategic passes.</li>
+                                    <li><b>Material genius:</b> Sticky rice mortar provided incredible durability.</li>
+                                    <li><b>Legacy:</b> A testament to logistics, labor management, and defensive design.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🏺</span> Petra, Jordan</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p><b>Hydraulic Mastery:</b> An ancient city carved into rose-red sandstone, featuring dams, cisterns, and water conduits supporting 30,000 people in a desert.</p>
+                                <ul>
+                                    <li><b>Water engineering:</b> Complex channels and ceramic pipes.</li>
+                                    <li><b>Structural carving:</b> Rock-cut architecture with precise load distribution.</li>
+                                    <li><b>Resilience:</b> Survived earthquakes due to flexible rock joints.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🗿</span> Christ the Redeemer</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p><b>Structural Art:</b> 30m statue atop Corcovado Mountain, designed to withstand 168 mph winds and seismic activity.</p>
+                                <ul>
+                                    <li><b>Material:</b> Reinforced concrete shell with soapstone cladding.</li>
+                                    <li><b>Wind analysis:</b> Aerodynamic design reduces lateral forces.</li>
+                                    <li><b>Foundation:</b> Deep piles anchored into mountain bedrock.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">⛰️</span> Machu Picchu</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p><b>Seismic Resilience:</b> Inca dry-stone masonry — blocks fit perfectly without mortar, allowing movement during earthquakes.</p>
+                                <ul>
+                                    <li><b>Drainage:</b> Over 100 underground drains prevent landslides.</li>
+                                    <li><b>Terracing:</b> Agricultural terraces stabilize slopes.</li>
+                                    <li><b>Alignment:</b> Astronomical and topographical precision.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🔊</span> Chichén Itzá</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p><b>Acoustic & Astronomical Wonder:</b> Pyramid of Kukulkán creates echo chirps and serpent shadows during equinoxes.</p>
+                                <ul>
+                                    <li><b>Geometry:</b> 365 steps represent the solar year.</li>
+                                    <li><b>Cenotes:</b> Natural sinkholes used as water sources.</li>
+                                    <li><b>Structural mass:</b> Core filled with rubble and limestone.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🏟️</span> Roman Colosseum</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p><b>Concrete & Crowds:</b> First amphitheater with complex vaults, ramps, and retractable canvas awning (velarium).</p>
+                                <ul>
+                                    <li><b>Roman concrete:</b> Volcanic ash, lime, seawater made it durable.</li>
+                                    <li><b>Load distribution:</b> Elliptical shape handled 50,000 spectators.</li>
+                                    <li><b>Underground hypogeum:</b> Early elevator and trapdoor systems.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🕌</span> Taj Mahal</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p><b>Foundation & Symmetry:</b> Built on timber wells that swell with moisture, providing earthquake dampening.</p>
+                                <ul>
+                                    <li><b>Scaffolding:</b> Brick and iron-laced mortar.</li>
+                                    <li><b>Dome engineering:</b> Double dome with high acoustic resonance.</li>
+                                    <li><b>Minarets:</b> Angled outward to protect main tomb in collapse.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floral-divider">✧ ✿ ✧</div>
+            </div>
+        `;
+        const featsContent = `
+            <div class="content-wrapper">
+                <div class="section-title">engineering feats</div>
+                <div class="section-subtitle">Ancient wisdom meeting modern innovation</div>
+                <div class="collapsible-container">
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🏗️</span> Load Distribution & Arches</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <ul>
+                                    <li><b>Roman arch:</b> Transfers weight to abutments — still used in bridges today.</li>
+                                    <li><b>Buttresses:</b> External supports seen in Gothic cathedrals.</li>
+                                    <li><b>Post-tensioning:</b> Modern adaptation of ancient tension concepts.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">💧</span> Hydraulic Engineering</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <ul>
+                                    <li><b>Qanats (Persia):</b> Underground canals still used today in arid regions.</li>
+                                    <li><b>Roman aqueducts:</b> Gravity-driven water supply across valleys.</li>
+                                    <li><b>Modern dams:</b> Hoover Dam, Three Gorges — evolved from ancient weirs.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🧱</span> Material Science Evolution</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <ul>
+                                    <li><b>From limestone & marble →</b> High-strength concrete & composites.</li>
+                                    <li><b>Self-healing concrete:</b> Bacteria-based healing inspired by Roman resilience.</li>
+                                    <li><b>Carbon fiber wraps:</b> Retrofitting ancient monuments without altering appearance.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        const preservationContent = `
+            <div class="content-wrapper">
+                <div class="section-title">preservation & ethics</div>
+                <div class="section-subtitle">Protecting our shared cultural heritage</div>
+                <div class="collapsible-container">
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🏛️</span> Structural Retrofitting</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <ul>
+                                    <li><b>Base isolation:</b> Protecting ancient structures from earthquake damage.</li>
+                                    <li><b>Injection grouting:</b> Stabilizing cracked masonry without altering appearance.</li>
+                                    <li><b>Monitoring systems:</b> IoT sensors detect micro-movements in real time.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">⚖️</span> Ethical Dilemmas</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <ul>
+                                    <li><b>Venice MOSE project:</b> Flood barriers vs. lagoon ecosystem impact.</li>
+                                    <li><b>Development vs. heritage:</b> Subways, tunnels near ancient sites.</li>
+                                    <li><b>Repatriation of artifacts:</b> Who owns engineering knowledge?</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🌿</span> Sustainable Restoration</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <ul>
+                                    <li><b>Anastylosis:</b> Reassembling ruins using original materials wherever possible.</li>
+                                    <li><b>Green conservation:</b> Using low-impact lime mortars and local stone.</li>
+                                    <li><b>Climate adaptation:</b> Protecting coastal wonders from sea-level rise.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="stat-group">
+                        <div><div class="stat-number">1,157</div><div class="stat-label">UNESCO World Heritage Sites</div></div>
+                        <div><div class="stat-number">Many</div><div class="stat-label">rely on civil engineers for survival</div></div>
+                    </div>
+                </div>
+            </div>
+        `;
+        const legacyContent = `
+            <div class="content-wrapper">
+                <div class="section-title">future legacy</div>
+                <div class="section-subtitle">What will future civilizations marvel at?</div>
+                <div class="collapsible-container">
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🚀</span> Mega-infrastructure</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <ul>
+                                    <li><b>The Line (Neom):</b> 170km linear city — zero cars, 100% renewable energy.</li>
+                                    <li><b>Intercontinental bridges:</b> Gibraltar or Bering Strait crossings.</li>
+                                    <li><b>Space elevators:</b> Carbon nanotube tethers beyond earth.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">♻️</span> Circular Economy</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <ul>
+                                    <li><b>Design for deconstruction:</b> Buildings that become material banks.</li>
+                                    <li><b>3D-printed habitats:</b> Using lunar soil or recycled concrete.</li>
+                                    <li><b>Biocrete:</b> Living buildings that self-repair.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">📜</span> Engineers as Storytellers</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <ul>
+                                    <li>Documenting modern wonders for future generations.</li>
+                                    <li>Digital twins and heritage BIM models.</li>
+                                    <li>Advocating for resilient, inclusive, and beautiful infrastructure.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floral-divider">✧ ✿ ✧</div>
+                <div class="info-card">
+                    <p style="font-style: italic; margin: 0;">"The best time to plant a tree was 20 years ago. The second best time is now." — Let us build wisely for tomorrow.</p>
+                </div>
+            </div>
+        `;
+        const authorContent = `
+            <div class="content-wrapper">
+                <div class="section-title">about the author</div>
+                <div class="section-subtitle">A civil engineering student with a passion for heritage and storytelling</div>
+                <div class="info-card" style="text-align: left;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;">
+                        <div style="flex: 1; min-width: 180px; text-align: center;">
+                            <div style="font-size: 5rem;">👷🏻‍♂️</div>
+                            <div class="badge" style="margin-top: 0.5rem;">civil engineering</div>
+                        </div>
+                        <div style="flex: 3;">
+                            <p style="font-size: 1rem; margin-bottom: 1rem;"><b>Hello, I'm Rian James T. Dionio</b> — a civil engineering student who believes in the beauty and its intrecacies.</p>
+                            <p>This advocacy website was born from a simple idea: the wonders of the world aren't just tourist destinations they're textbooks written in stone, concrete, and human perseverance. Each monument teaches us about material science, load distribution, hydraulics, and the timeless human desire to build something that outlasts us.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapsible-container">
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">📚</span> why civil engineering?</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p>I chose civil engineering because it's honestly a very interesting field, one that I've learned to be so much more important than what I've initially believed. I've always thought that how structures are built, and how they hold themselves are very intersting, like suspension bridges, or even skyscrapers and dams.</p>
+                                <ul>
+                                    <li><b>Structural enjoyer:</b> I believe in the beauty of structures and how they're held up.</li>
+                                    <li><b>Sustainability advocate:</b> The greenest building is often the one already standing.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">🎯</span> the purpose of this advocacy</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p>This website advocates for:</p>
+                                <ul>
+                                    <li><b>Preservation:</b> Protecting ancient wonders for future generations.</li>
+                                    <li><b>Education:</b> Showing how civil engineering principles appear in historical marvels.</li>
+                                    <li><b>Inspiration:</b> Encouraging young engineers to look at old structures with new eyes.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-box">
+                        <div class="box-header" onclick="toggleBox(this)">
+                            <h3><span class="wonder-icon">💭</span> a personal note</h3>
+                            <span class="box-icon">→</span>
+                        </div>
+                        <div class="box-content">
+                            <div class="inner-content">
+                                <p>I honestly really do like this course and the field I'm going to enter. I initially wanted to study marine biology but deicded to take civil engineering on a whim and honestly, depsite the difficulties, it's become something I've grown to love and enjoy.</p>
+			    </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="floral-divider">✧ ✿ ✧</div>
+                <div class="info-card" style="text-align: center;">
+                    <p style="margin-bottom: 0.5rem;">📧 <b>Get in touch</b></p>
+                    <p style="font-size: 0.85rem; margin-bottom: 0;">rianjames.dionio@gmail.com</p>
+                    <div style="margin-top: 1rem;">
+                        <span class="badge">civil engineering</span>
+                        <span class="badge">heritage advocacy</span>
+                        <span class="badge">sustainable design</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        const contentMap = {
+            wonders: wondersContent,
+            feats: featsContent,
+            preservation: preservationContent,
+            legacy: legacyContent,
+            author: authorContent
+        };
+        let currentPage = "wonders";
+        function toggleBox(headerElement) {
+            const box = headerElement.closest('.collapsible-box');
+            const contentDiv = box.querySelector('.box-content');
+            const iconSpan = box.querySelector('.box-icon');
+            if (contentDiv) {
+                contentDiv.classList.toggle('expanded');
+            }
+            if (iconSpan) {
+                iconSpan.classList.toggle('expanded');
+            }
+        }
+        function attachBoxToggles() {
+            const allHeaders = document.querySelectorAll('.box-header');
+            allHeaders.forEach(header => {
+                header.removeAttribute('onclick');
+                header.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleBox(this);
+                });
+            });
+        }
+        function navigateTo(pageId) {
+            const contentDiv = document.getElementById('dynamicContent');
+            if (contentMap[pageId]) {
+                contentDiv.innerHTML = contentMap[pageId];
+                currentPage = pageId;
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-page') === pageId) {
+                        link.classList.add('active');
+                    }
+                });
+                attachBoxToggles();
+            }
+        }
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    if (pageId) {
+                        navigateTo(pageId);
+                    }
+                });
+            });
+        }
+        window.onload = () => {
+            document.getElementById('dynamicContent').innerHTML = wondersContent;
+            attachBoxToggles();
+            initNavigation();
+        };
+    </script>
+</body>
+</html>
